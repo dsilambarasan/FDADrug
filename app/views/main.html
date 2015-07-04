@@ -1,0 +1,187 @@
+<div class="">
+  <div class="input-group">
+    <input type="text" class="form-control" ng-model="drugName" placeholder="Enter a Drug (Brand Name or Generic)" ng-enter>
+    <span class="input-group-btn">
+      <button type="button" class="btn btn-default" aria-label="Left Align" ng-disabled="drugName==null || drugName.length==0" ng-click="makeDrugURL()">
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+      </button>
+    </span>
+  </div>
+  <div class="col-lg-4 col-xs-12">
+    <br/>
+    <button type="button" class="btn btn-default chevron_toggleable" style="width:100%;" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+      Filter  <span class="toggle_arrow glyphicon glyphicon-chevron-down"></span>
+    </button><br/>
+    <div class="collapse in" id="collapseExample">
+      <div class="well" style="text-align:left;">
+        <div>
+          <div class="checkbox">
+            <label>
+              <input ng-model="chosen.isSerious" ng-change="seriousCheck()" type="checkbox">
+              Seriousness
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-change="seriousCheck()" ng-model="seriousness" value="1">
+                  Serious
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-change="seriousCheck()" ng-model="seriousness" value="2">
+                  Non-Serious
+                </label>
+              </div>
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input ng-model="chosen.isReport" ng-change="reportCheck()" type="checkbox">
+              Method of Reporting
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-change="reportCheck()"  ng-model="reporting" value="1">
+                  Via Public
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-change="reportCheck()" ng-model="reporting" value="2">
+                  Via Manufacturer
+                </label>
+              </div>
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input ng-model="chosen.isGender" ng-change="genderCheck()" type="checkbox">
+              Gender
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-change="genderCheck()" ng-model="gender" value="1">
+                  Male
+                </label>
+              </div>
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-change="genderCheck()" ng-model="gender" value="2">
+                  Female
+                </label>
+              </div>
+            </label>
+          </div>
+          <div class="checkbox">
+            <label>
+              <input ng-model="chosen.isAgeRange" ng-change="ageRangeCheck()" type="checkbox">
+              Age Group
+            </label>
+            <div class="form-group"><br/>
+              <div class="col-sm-12">
+                <div style="display: none;" id="slider-range"></div>
+                <input type="hidden" id="amount" readonly>
+              </div>
+              <div class="col-xs-5 col-sm-4">
+                <input type="number" class="form-control" id="min" ng-change="ageRangeCheck()" ng-model="fromage" min="1" max="100" placeholder="Min">
+              </div>
+              <div class="col-xs-1 col-sm-1">
+                to
+              </div>
+              <div class="col-xs-5 col-sm-4">
+                <input type="number" class="form-control" id="max" ng-change="ageRangeCheck()" ng-model="toage" min="1" max="100" placeholder="Max">
+              </div>
+            </div>
+          </div>
+          <br/>
+          <div class="checkbox">
+            <label>
+              <input ng-model="chosen.isYear" ng-change="yearCheck()" type="checkbox">
+              Report Received on 
+            </label>
+            <div class="form-group"><br/>
+              <div class="col-xs-5 col-sm-4">
+                <input type="number" class="form-control" ng-change="yearCheck()" ng-model="fromyear" min="1970" max="2015" placeholder="From Year">
+              </div>
+              <div class="col-xs-1 col-sm-1">
+                to
+              </div>
+              <div class="col-xs-5 col-sm-4">
+                <input type="number" class="form-control" ng-change="yearCheck()" ng-model="toyear" min="1970" max="2015" placeholder="To Year">
+              </div>
+            </div>
+          </div><br/>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-lg-8 col-xs-12">
+    <br/>
+    <div class="customDiv text-center" ng-repeat="(key,value) in chosen" ng-show="value">
+      <span ng-show="key=='isSerious'">Serious :
+        <span ng-bind="seriousness==1 ? 'Serious' : 'Non-Serious'"></span>
+        <span class="close" ng-click="changeFilterOptions(key)">&times;</span>
+      </span>
+      <span ng-show="key=='isReport'">Method of Reporting :
+        <span ng-bind="reporting==1 ? 'Via Public' : 'Via Manufacturer'"></span>
+        <span class="close" ng-click="changeFilterOptions(key)">&times;</span>
+      </span> 
+      <span ng-show="key=='isGender'">Gender :
+        <span ng-bind="gender==1 ? 'Male' : 'Female'"></span>
+        <span class="close" ng-click="changeFilterOptions(key)">&times;</span>
+      </span> 
+      <span ng-show="key=='isAgeRange'">Age Group :
+        <span>{{fromage}} - {{toage}}</span>
+        <span class="close" ng-click="changeFilterOptions(key)">&times;</span>
+      </span>
+      <span ng-show="key=='isYear'">Report Received On :
+        <span>{{fromyear}} - {{toyear}}</span>
+        <span class="close" ng-click="changeFilterOptions(key)">&times;</span>
+      </span> 
+    </div>
+
+    <div style="text-align: center;" ng-if="countDrugData.length != 0 && totalDrugData.length != 0">
+      <h1>{{totalDrugData |number:0}}</h1>
+      <h2>Adverse Reactions <span ng-if="searchedDrugName.length != 0">for {{searchedDrugName}}</span> </h2>
+      <hr style="border-width:2px;border-color: #ccc;" />
+      <h4>10 Most Common Adverse Reactions</h4>
+
+      <div ng-show="myloader">
+        <div class="spinner-loader">
+          Loading…
+        </div>
+      </div>
+
+      <div id="chart"></div>
+      <table ng-hide="true" border="0" style=" margin: 0 auto;">
+        <tr data-ng-repeat="drug in countDrugData | limitTo:10">
+          <td class="custTablePad">{{drug.count}}</td>
+          <td class="custTablePad">{{drug.term}}</td>
+        </tr>
+      </table><br/>
+      <a class="btn btn-default btn-sm" href="mailto:info@meliosystems.com?Subject=FDA%20Drug%20Suggestion&amp;body={{maildrugCURL}}">Send Suggestion Link By Mail</a>
+      <br/><br/>
+    </div>
+
+    <div style="text-align: center;" ng-if="countDrugData.length == 0 && totalDrugData.length == 0">
+      <h1>{{totalDrugData |number:0}}</h1>
+      <h2>Adverse Reactions <span ng-if="searchedDrugName.length != 0">for {{searchedDrugName}}</span> </h2>
+      <hr style="border-width:2px;border-color: #ccc;" />
+      <h4>No Drug's Found</h4>
+      <h5>Enter a Different Search Term</h5>
+    </div>
+
+  </div>
+
+</div>
+
+<div class="container">
+  <p class="text-muted"><strong>Disclaimer :</strong> {{disclaimer}}</p>
+  <p class="text-muted"><strong>Last updated date :</strong> {{last_updated}}</p>
+</div>
+
+<script>
+  $('.chevron_toggleable').on('click', function() {
+    $('.toggle_arrow').toggleClass('glyphicon-chevron-down glyphicon-chevron-up');
+  });
+</script>
+
