@@ -2,7 +2,9 @@
 
 ## Build & development
 
-Run `grunt` for building and `grunt serve` for preview.
+Run `npm install` and `bower install` to intall all dependencies.
+
+Run `grunt serve` to execute the application.
 
 ## Testing
 
