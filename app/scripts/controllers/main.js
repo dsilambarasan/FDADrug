@@ -106,74 +106,106 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
   $scope.makeDrugURL        =     function() {
     $scope.myloader       =    true;
     $scope.searchedDrugName   =     $scope.drugName;
+    var searchparam = 0;
+    var drugTURL = 'https://api.fda.gov/drug/event.json?api_key=pw60LprRW1vp9WXwFtosc6lT7Tm50AvH35rnIbOK';
+    var drugCURL = drugTURL;
 
-    var drugTURL = 'https://api.fda.gov/drug/event.json?api_key=pw60LprRW1vp9WXwFtosc6lT7Tm50AvH35rnIbOK&search=(patient.drug.medicinalproduct:"'
-    + $scope.drugName
-    + '"+OR+patient.reaction.reactionmeddrapt:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.substance_name:"' + $scope.drugName +
-      '"+OR+patient.drug.drugindication:"' + $scope.drugName +
-      '"+OR+patient.drug.drugdosageform:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.product_type:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.pharm_class_cs:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.manufacturer_name:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.brand_name:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.pharm_class_epc:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.generic_name:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.application_number:"' + $scope.drugName + '")';
-
-    var drugCURL = 'https://api.fda.gov/drug/event.json?api_key=pw60LprRW1vp9WXwFtosc6lT7Tm50AvH35rnIbOK&search=(patient.drug.medicinalproduct:"'
-    + $scope.drugName
-    + '"+OR+patient.reaction.reactionmeddrapt:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.substance_name:"' + $scope.drugName +
-      '"+OR+patient.drug.drugindication:"' + $scope.drugName +
-      '"+OR+patient.drug.drugdosageform:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.product_type:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.pharm_class_cs:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.manufacturer_name:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.brand_name:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.pharm_class_epc:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.generic_name:"' + $scope.drugName +
-      '"+OR+patient.drug.openfda.application_number:"' + $scope.drugName + '")';
+    if ($scope.drugName) {
+      searchparam = 1;
+      drugTURL += '&search=(patient.drug.medicinalproduct:"'
+      + $scope.drugName +
+        '"+patient.drug.openfda.substance_name:"' + $scope.drugName +
+        '"+patient.drug.openfda.product_type:"' + $scope.drugName +
+        '"+patient.drug.openfda.manufacturer_name:"' + $scope.drugName +
+        '"+patient.drug.openfda.brand_name:"' + $scope.drugName +
+        '"+patient.drug.openfda.generic_name:"' + $scope.drugName +
+        '"+patient.drug.openfda.application_number:"' + $scope.drugName + '")';
+    }
 
     $scope.maildrugCURL = 'http://54.254.212.175/FDA/index.html?drugName='+ $scope.drugName;
 
     if($scope.chosen.isSerious) {
-      drugTURL += '+AND+(serious:' + $scope.seriousness + ')';
-      drugCURL += '+AND+(serious:' + $scope.seriousness + ')';
+      if (searchparam == 0) {
+        searchparam = 1;
+        drugTURL += '&search='
+        drugCURL += '&search='
+      }
+      else {
+        drugTURL += '+AND+';
+        drugCURL += '+AND+';
+      }
+      drugTURL += '(serious:' + $scope.seriousness + ')';
+      drugCURL += '(serious:' + $scope.seriousness + ')';
       $scope.maildrugCURL += '%26seriousness='+ $scope.seriousness;
     }
 
     if($scope.chosen.isReport) {
+      if (searchparam == 0) {
+        searchparam = 1;
+        drugTURL += '&search='
+        drugCURL += '&search='
+      }
+      else {
+        drugTURL += '+AND+';
+        drugCURL += '+AND+';
+      }
       /* Reported directly by public */
       if($scope.reporting == 1){
-        drugTURL += '+OR+_missing_:companynumb';
-        drugCURL += '+OR+_missing_:companynumb';
+        drugTURL += '_missing_:companynumb';
+        drugCURL += '_missing_:companynumb';
       }
       /* Reported through manufacturers */
       else{
-        drugTURL += '+OR+_exists_:companynumb';
-        drugCURL += '+OR+_exists_:companynumb';
+        drugTURL += '_exists_:companynumb';
+        drugCURL += '_exists_:companynumb';
       }
 
       $scope.maildrugCURL += '%26reporting=' + $scope.reporting;
     }
 
     if($scope.chosen.isGender) {
-      drugTURL += '+AND+(patient.patientsex:' + $scope.gender + ')';
-      drugCURL += '+AND+(patient.patientsex:' + $scope.gender + ')';
+      if (searchparam == 0) {
+        searchparam = 1;
+        drugTURL += '&search='
+        drugCURL += '&search='
+      }
+      else {
+        drugTURL += '+AND+';
+        drugCURL += '+AND+';
+      }
+      drugTURL += '(patient.patientsex:' + $scope.gender + ')';
+      drugCURL += '(patient.patientsex:' + $scope.gender + ')';
       $scope.maildrugCURL += '%26paientsex='+ $scope.gender;
     }
 
     if($scope.chosen.isAgeRange) {
-      drugTURL += '+AND+patient.patientonsetage:[' + $scope.fromage + '+TO+' + $scope.toage + ']';
-      drugCURL += '+AND+patient.patientonsetage:[' + $scope.fromage + '+TO+' + $scope.toage + ']';
+      if (searchparam == 0) {
+        searchparam = 1;
+        drugTURL += '&search='
+        drugCURL += '&search='
+      }
+      else {
+        drugTURL += '+AND+';
+        drugCURL += '+AND+';
+      }
+      drugTURL += 'patient.patientonsetage:[' + $scope.fromage + '+TO+' + $scope.toage + ']';
+      drugCURL += 'patient.patientonsetage:[' + $scope.fromage + '+TO+' + $scope.toage + ']';
       $scope.maildrugCURL += '%26fromage=' + $scope.fromage;
       $scope.maildrugCURL += '%26toage=' + $scope.toage;
     }
 
     if ($scope.chosen.isYear) {
-      drugTURL += '+OR+receivedate:[' + $scope.fromyear+'0101' + '+TO+' + $scope.toyear +'0101' +']';
-      drugCURL += '+OR+receivedate:[' + $scope.fromyear+'0101' + '+TO+' + $scope.toyear +'0101' +']';
+      if (searchparam == 0) {
+        searchparam = 1;
+        drugTURL += '&search='
+        drugCURL += '&search='
+      }
+      else {
+        drugTURL += '+AND+';
+        drugCURL += '+AND+';
+      }
+      drugTURL += 'receivedate:[' + $scope.fromyear + '0101' + '+TO+' + $scope.toyear + '0101' +']';
+      drugCURL += 'receivedate:[' + $scope.fromyear + '0101' + '+TO+' + $scope.toyear + '0101' +']';
       $scope.maildrugCURL += '%26fromyear=' + $scope.fromyear;
       $scope.maildrugCURL += '%26toyear=' + $scope.toyear;
     }
@@ -305,7 +337,7 @@ angular.module('reportApp').factory('drugUtilities', [
           // this callback will be called synchronously
           // when the response is available
           // $log.log(""); want to show log in console
-          console.clear();
+          //console.clear();
           if (options.error) {
             options.error(data, status, headers, config);
           }

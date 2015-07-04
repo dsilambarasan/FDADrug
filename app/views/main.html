@@ -21,13 +21,13 @@
               Seriousness
               <div class="radio">
                 <label>
-                  <input type="radio" ng-change="seriousCheck()" ng-model="seriousness" value="1">
+                  <input type="radio" ng-change="seriousCheck()" ng-model="$parent.seriousness" value="1">
                   Serious
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  <input type="radio" ng-change="seriousCheck()" ng-model="seriousness" value="2">
+                  <input type="radio" ng-change="seriousCheck()" ng-model="$parent.seriousness" value="2">
                   Non-Serious
                 </label>
               </div>
@@ -39,13 +39,13 @@
               Method of Reporting
               <div class="radio">
                 <label>
-                  <input type="radio" ng-change="reportCheck()"  ng-model="reporting" value="1">
+                  <input type="radio" ng-change="reportCheck()"  ng-model="$parent.reporting" value="1">
                   Via Public
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  <input type="radio" ng-change="reportCheck()" ng-model="reporting" value="2">
+                  <input type="radio" ng-change="reportCheck()" ng-model="$parent.reporting" value="2">
                   Via Manufacturer
                 </label>
               </div>
@@ -57,13 +57,13 @@
               Gender
               <div class="radio">
                 <label>
-                  <input type="radio" ng-change="genderCheck()" ng-model="gender" value="1">
+                  <input type="radio" ng-change="genderCheck()" ng-model="$parent.gender" value="1">
                   Male
                 </label>
               </div>
               <div class="radio">
                 <label>
-                  <input type="radio" ng-change="genderCheck()" ng-model="gender" value="2">
+                  <input type="radio" ng-change="genderCheck()" ng-model="$parent.gender" value="2">
                   Female
                 </label>
               </div>
@@ -80,13 +80,13 @@
                 <input type="hidden" id="amount" readonly>
               </div>
               <div class="col-xs-5 col-sm-4">
-                <input type="number" class="form-control" id="min" ng-change="ageRangeCheck()" ng-model="fromage" min="1" max="100" placeholder="Min">
+                <input type="number" class="form-control" id="min" ng-change="ageRangeCheck()" ng-model="$parent.fromage" min="1" max="100" placeholder="Min">
               </div>
               <div class="col-xs-1 col-sm-1">
                 to
               </div>
               <div class="col-xs-5 col-sm-4">
-                <input type="number" class="form-control" id="max" ng-change="ageRangeCheck()" ng-model="toage" min="1" max="100" placeholder="Max">
+                <input type="number" class="form-control" id="max" ng-change="ageRangeCheck()" ng-model="$parent.toage" min="1" max="100" placeholder="Max">
               </div>
             </div>
           </div>
@@ -98,13 +98,13 @@
             </label>
             <div class="form-group"><br/>
               <div class="col-xs-5 col-sm-4">
-                <input type="number" class="form-control" ng-change="yearCheck()" ng-model="fromyear" min="1970" max="2015" placeholder="From Year">
+                <input type="number" class="form-control" ng-change="yearCheck()" ng-model="$parent.fromyear" min="1970" max="2015" placeholder="From Year">
               </div>
               <div class="col-xs-1 col-sm-1">
                 to
               </div>
               <div class="col-xs-5 col-sm-4">
-                <input type="number" class="form-control" ng-change="yearCheck()" ng-model="toyear" min="1970" max="2015" placeholder="To Year">
+                <input type="number" class="form-control" ng-change="yearCheck()" ng-model="$parent.toyear" min="1970" max="2015" placeholder="To Year">
               </div>
             </div>
           </div><br/>
