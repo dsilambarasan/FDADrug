@@ -1,6 +1,6 @@
 <div class="">
   <div class="input-group">
-    <input type="text" class="form-control" ng-model="drugName" placeholder="Enter a Drug (Brand Name or Generic)" ng-enter>
+    <input type="text" class="form-control" ng-model="$parent.drugName" placeholder="Enter a Drug (Brand Name or Generic)" ng-enter>
     <span class="input-group-btn">
       <button type="button" class="btn btn-default" aria-label="Left Align" ng-disabled="drugName==null || drugName.length==0" ng-click="makeDrugURL()">
         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
@@ -158,7 +158,7 @@
           <td class="custTablePad">{{drug.term}}</td>
         </tr>
       </table><br/>
-      <a class="btn btn-default btn-sm" href="mailto:info@meliosystems.com?Subject=FDA%20Drug%20Suggestion&amp;body={{maildrugCURL}}">Send Suggestion Link By Mail</a>
+      <a class="btn btn-default btn-sm" href="mailto:info@meliosystems.com?Subject=FDA%20Drug%20Suggestion&amp;body={{maildrugCURL}}">Email this report</a>
       <br/><br/>
     </div>
 
@@ -166,8 +166,8 @@
       <h1>{{totalDrugData |number:0}}</h1>
       <h2>Adverse Reactions <span ng-if="searchedDrugName.length != 0">for {{searchedDrugName}}</span> </h2>
       <hr style="border-width:2px;border-color: #ccc;" />
-      <h4>No Drug's Found</h4>
-      <h5>Enter a Different Search Term</h5>
+      <h4>No record found.</h4>
+      <h5>Try different search term.</h5>
     </div>
 
   </div>
@@ -175,8 +175,8 @@
 </div>
 
 <div class="container">
-  <p class="text-muted"><strong>Disclaimer :</strong> {{disclaimer}}</p>
   <p class="text-muted"><strong>Last updated date :</strong> {{last_updated}}</p>
+  <p class="text-muted"><strong>Disclaimer :</strong> {{disclaimer}}</p>
 </div>
 
 <script>

@@ -72,6 +72,12 @@ body {
 }
 
 @media all and (min-width: 787px) {
-  .navbar-brand{font-size:30px!important;}
+  .navbar-brand{
+    font-size:30px!important;
+  }
+  .footer span {
+    margin: 10px 0;
+    float: right;
+  }
 }
 

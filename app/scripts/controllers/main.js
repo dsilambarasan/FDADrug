@@ -95,12 +95,12 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
   $scope.changeFilterOptions       =   function(filterkey) {
     $scope.filterkey = filterkey;
     angular.forEach($scope.chosen, function(key, value) {
-      if (value == $scope.filterkey) {
+      if (value === $scope.filterkey) {
         $scope.chosen[value] = false;
       }
     });
     $scope.makeDrugURL();
-  }
+  },
 
   /* To create a Search URL */
   $scope.makeDrugURL        =     function() {
@@ -108,27 +108,25 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
     $scope.searchedDrugName   =     $scope.drugName;
     var searchparam = 0;
     var drugTURL = 'https://api.fda.gov/drug/event.json?api_key=pw60LprRW1vp9WXwFtosc6lT7Tm50AvH35rnIbOK';
-    var drugCURL = drugTURL;
 
-    if ($scope.drugName) {
-      searchparam = 1;
-      drugTURL += '&search=(patient.drug.medicinalproduct:"'
-      + $scope.drugName +
-        '"+patient.drug.openfda.substance_name:"' + $scope.drugName +
-        '"+patient.drug.openfda.product_type:"' + $scope.drugName +
-        '"+patient.drug.openfda.manufacturer_name:"' + $scope.drugName +
-        '"+patient.drug.openfda.brand_name:"' + $scope.drugName +
-        '"+patient.drug.openfda.generic_name:"' + $scope.drugName +
-        '"+patient.drug.openfda.application_number:"' + $scope.drugName + '")';
-    }
+    searchparam = 1;
+    drugTURL += '&search=(patient.drug.medicinalproduct:"' + $scope.drugName +
+      '"+OR+patient.drug.openfda.substance_name:"' + $scope.drugName +
+      '"+OR+patient.drug.openfda.product_type:"' + $scope.drugName +
+      '"+OR+patient.drug.openfda.manufacturer_name:"' + $scope.drugName +
+      '"+OR+patient.drug.openfda.brand_name:"' + $scope.drugName +
+      '"+OR+patient.drug.openfda.generic_name:"' + $scope.drugName +
+      '"+OR+patient.drug.openfda.application_number:"' + $scope.drugName + '")';
+
+    var drugCURL = drugTURL;
 
     $scope.maildrugCURL = 'http://54.254.212.175/FDA/index.html?drugName='+ $scope.drugName;
 
     if($scope.chosen.isSerious) {
-      if (searchparam == 0) {
+      if (searchparam === 0) {
         searchparam = 1;
-        drugTURL += '&search='
-        drugCURL += '&search='
+        drugTURL += '&search=';
+        drugCURL += '&search=';
       }
       else {
         drugTURL += '+AND+';
@@ -140,15 +138,16 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
     }
 
     if($scope.chosen.isReport) {
-      if (searchparam == 0) {
+      if (searchparam === 0) {
         searchparam = 1;
-        drugTURL += '&search='
-        drugCURL += '&search='
+        drugTURL += '&search=';
+        drugCURL += '&search=';
       }
       else {
         drugTURL += '+AND+';
         drugCURL += '+AND+';
       }
+      console.log($scope.reporting);
       /* Reported directly by public */
       if($scope.reporting == 1){
         drugTURL += '_missing_:companynumb';
@@ -164,10 +163,10 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
     }
 
     if($scope.chosen.isGender) {
-      if (searchparam == 0) {
+      if (searchparam === 0) {
         searchparam = 1;
-        drugTURL += '&search='
-        drugCURL += '&search='
+        drugTURL += '&search=';
+        drugCURL += '&search=';
       }
       else {
         drugTURL += '+AND+';
@@ -179,10 +178,10 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
     }
 
     if($scope.chosen.isAgeRange) {
-      if (searchparam == 0) {
+      if (searchparam === 0) {
         searchparam = 1;
-        drugTURL += '&search='
-        drugCURL += '&search='
+        drugTURL += '&search=';
+        drugCURL += '&search=';
       }
       else {
         drugTURL += '+AND+';
@@ -195,10 +194,10 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
     }
 
     if ($scope.chosen.isYear) {
-      if (searchparam == 0) {
+      if (searchparam === 0) {
         searchparam = 1;
-        drugTURL += '&search='
-        drugCURL += '&search='
+        drugTURL += '&search=';
+        drugCURL += '&search=';
       }
       else {
         drugTURL += '+AND+';
@@ -217,7 +216,7 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
     $scope.countDrugDetails(drugCURL);
 
     $scope.myloader       =     false;
-  }
+  },
 
   /* To Get Drug Details JSON */
   $scope.totalDrugDetails       =   function(drugTURL) {
@@ -231,11 +230,11 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
         $scope.last_updated    =  data.meta.last_updated;
         $scope.totalDrugData   =   data.meta.results.total;
       },
-      error: function(data) {
+      error: function() {
         $scope.totalDrugData   =   [];
       }
     });
-  }
+  },
 
   /* To Get Drug Count JSON */
   $scope.countDrugDetails       =   function(drugCURL) {
@@ -248,12 +247,11 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
         $scope.countDrugData   =   data.results;
         $scope.pieChart();
       },
-      error: function(data) {
+      error: function() {
         $scope.countDrugData   =   [];
-        $scope.pieChart();
       }
     });
-  }
+  },
 
   /* To Create Pie Chart */
   $scope.pieChart      =    function() {
@@ -271,7 +269,7 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
           type: 'pie'
         },
         legend: {
-          position: 'right'
+          position: 'bottom'
         },
         tooltip:{
           format:{
@@ -281,38 +279,43 @@ angular.module('reportApp').controller('MainCtrl', function ($scope, drugUtiliti
           }
         }
       });
-    });
-  }
+    }, 1000);
+  },
 
   /* Check Seriousness Label */
   $scope.seriousCheck    =   function() {
-    if($scope.chosen.isSerious)
+    if ($scope.chosen.isSerious) {
       $scope.makeDrugURL();
-  }
+    }
+  },
 
   /* Check Method of Reporting Label */
   $scope.reportCheck    =   function() {
-    if($scope.chosen.isReport)
+    if ($scope.chosen.isReport) {
       $scope.makeDrugURL();
-  }
+    }
+  },
 
   /* Check Gender Label */
   $scope.genderCheck    =   function() {
-    if($scope.chosen.isGender)
+    if ($scope.chosen.isGender) {
       $scope.makeDrugURL();
-  }
+    }
+  },
 
   /* Check Age Group Label */
   $scope.ageRangeCheck  =   function() {
-    if($scope.chosen.isAgeRange)
+    if ($scope.chosen.isAgeRange) {
       $scope.makeDrugURL();
-  }
+    }
+  },
 
   /* Check Report Received On Label */
-  $scope.yearCheck    =   function() {
-    if($scope.chosen.isYear)
+  $scope.yearCheck = function() {
+    if ($scope.chosen.isYear) {
       $scope.makeDrugURL();
-  }
+    }
+  };
 
 });
 
@@ -336,12 +339,12 @@ angular.module('reportApp').factory('drugUtilities', [
         }).error(function(data, status, headers, config) {
           // this callback will be called synchronously
           // when the response is available
-          // $log.log(""); want to show log in console
+          $log.log(""); //want to show log in console
           //console.clear();
           if (options.error) {
             options.error(data, status, headers, config);
           }
-        })
+        });
       }
     };
   }
